@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tebieti Qoruyaq</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <link rel="stylesheet" href="./style.css">
+    <style>
+        :root {
+            --primary-color: #f4f4f4;
+            --secondary-color: #333333;
+            --accent-color: #4CAF50;
+            --text-color: #2c3e50;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+        }
+        .navbar {
+            background-color: transparent;
+            transition: all 0.3s ease;
+            padding: 1rem 0;
+        }
+        .navbar.scrolled {
+            background-color: rgba(244, 244, 244, 0.95);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 0.5rem 0;
+        }
+        .navbar-brand img {
+            height: 40px;
+            transition: all 0.3s ease;
+        }
+        .navbar.scrolled .navbar-brand img {
+            height: 35px;
+        }
+        .nav-link {
+            color: var(--text-color) !important;
+            font-weight: 500;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 50%;
+            background-color: var(--accent-color);
+            transition: all 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+            left: 0;
+        }
+        .hero {
+            height: 100vh;
+            background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://img.freepik.com/free-photo/wide-angle-shot-single-tree-growing-clouded-sky-sunset-surrounded-by-grass_181624-22807.jpg?t=st=1726568405~exp=1726572005~hmac=7778a80dc82782186e5380c265a91fffa4c52bdd51e21bda354a4cd4af518346&w=2000');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-content {
+            position: absolute;
+            top: 50%;
+            left: 10%;
+            transform: translateY(-50%);
+            max-width: 600px;
+        }
+        .hero h1 {
+            font-size: 4.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 1rem;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            margin-bottom: 2rem;
+        }
+        .btn-custom {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-custom:hover {
+            background-color: #45a049;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+        .section-number {
+            font-size: 8rem;
+            font-weight: 700;
+            opacity: 0.1;
+            position: absolute;
+            left: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: -1;
+        }
+        .scroll-indicator {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1000;
+        }
+        .scroll-indicator .dot {
+            width: 10px;
+            height: 10px;
+            background-color: rgba(76, 175, 80, 0.5);
+            border-radius: 50%;
+            margin: 10px 0;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .scroll-indicator .dot.active {
+            background-color: var(--accent-color);
+            transform: scale(1.5);
+        }
+        .section {
+            padding: 100px 0;
+            position: relative;
+        }
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            position: relative;
+            display: inline-block;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 3px;
+            background-color: var(--accent-color);
+            bottom: -10px;
+            left: 0;
+        }
+        .project-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        .project-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .project-card .card-body {
+            padding: 1.5rem;
+        }
+        .project-card .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .project-card .card-text {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+            .hero p {
+                font-size: 1rem;
+            }
+            .section-number {
+                font-size: 5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#"><h4>Gələcəyimizi Qoruyaq</h4></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title">Menu</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link" href="#home">Əsas Səhvə</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#about">Hakqımızda</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#projects">İştirakçılar</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#contact">Əlaqə</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section id="home" class="hero">
+        <div class="hero-content" data-aos="fade-right" data-aos-duration="1000">
+            <h1>Təbiəti Qoruyaq</h1>
+            <p>Bu sayt 42 nömrəli məktəbin kiçik qrupu tərəfindən hazırlanıb, bizimlə birlikdə TƏBİTİ QORUYAQ</p>
+            <a href="#projects" class="btn btn-custom">İştirakçılarımız</a>
+        </div>
+    </section>
+
+    <div class="scroll-indicator">
+        <div class="dot active" data-section="home"></div>
+        <div class="dot" data-section="about"></div>
+        <div class="dot" data-section="projects"></div>
+        <div class="dot" data-section="contact"></div>
+    </div>
+
+    <section id="about" class="section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6" data-aos="fade-right" data-aos-duration="1000">
+                    <h2 class="section-title">Bu sayt nə üçündür?</h2>
+                    <p>Bu saytda kiçik qrupun iştirakçıları və təbiəti nə üçün qorumaq lazımdır sualına cavab verilib
+                        <br>Cəlil -> Əlbəttəki hərbir insan bilirki təbiət hər-bir canlıya lazımdır buna görə təbiəti qorumalıyıq
+                        <br>Copilot(Süni intelekt) -> Təbiəti qorumaq çox önəmlidir, çünki bu, bizim və gələcək nəsillərin sağ qalması və rifahı üçün vacibdir. Biz təbiətə qarşı yaxşı davranmalı və onu qorumağa çalışmalıyıq. 🌿🌎
+                    </p>
+                </div>
+                <div class="col-md-6" data-aos="fade-left" data-aos-duration="1000">
+                </div>
+            </div>
+        </div>
+        <div class="section-number">Cəlilli Cəlil</div>
+    </section>
+
+    <section id="projects" class="section bg-light">
+        <div class="container">
+            <h2 class="section-title text-center" data-aos="fade-up">İştirakçılar</h2>
+            <div class="row">
+                <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="project-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Saytı quran</h5>
+                            <p class="card-text">Cəlilli Cəlil 15 yaşında, proqramlaşdırmanı JED SCHOOLda öyrənmışəm</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="project-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Digər İştirakçılar</h5>
+                            <p class="card-text">Nail, Fuad, İsmayıl bunlar haqqında məlumat verilməsədə fikirlərini nəzərimdən keçirmişəm</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="300">
+                    <div class="project-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Müəllimə</h5>
+                            <p class="card-text">Günəş müəllimə məni kiçik qruplara alıb mənə bu şansı verən müəllimədir təşəkkür edirəm</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section-number">02</div>
+    </section>
+
+    <section id="contact" class="section">
+        <div class="container">
+            <h2 class="section-title text-center" data-aos="fade-up">Bizimlə Əlaqə</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-6" data-aos="fade-up" data-aos-delay="100">
+                    <form id="contact-form">
+                        <div class="mb-3">
+                            <input type="text" class="form-control" placeholder="Adınızı daxil edin" required>
+                        </div>
+                        <div class="mb-3">
+                            <input type="email" class="form-control" placeholder="email daxil edin" required>
+                        </div>
+                        <div class="mb-3">
+                            <textarea class="form-control" rows="5" placeholder="Mesajınızı daxil edin" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-custom">Təsdiqlə</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="section-number">Son</div>
+    </section>
+
+    <footer class="bg-dark text-white py-4">
+        <div class="container text-center">
+            <p>&copy; 2024 Təbiəti qoru, Cəlilli Cəlil</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        AOS.init();
+
+        window.addEventListener('scroll', function() {
+            var navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+
+            var sections = ['home', 'about', 'projects', 'contact'];
+            var current;
+
+            for (var i = 0; i < sections.length; i++) {
+                if (document.getElementById(sections[i]).offsetTop <= window.pageYOffset + 60) {
+                    current = sections[i];
+                }
+            }
+
+            var dots = document.querySelectorAll('.scroll-indicator .dot');
+            dots.forEach(function(dot) {
+                dot.classList.remove('active');
+                if (dot.getAttribute('data-section') === current) {
+                    dot.classList.add('active');
+                }
+            });
+        });
+
+        document.querySelectorAll('.scroll-indicator .dot').forEach(function(dot) {
+            dot.addEventListener('click', function() {
+                var section = this.getAttribute('data-section');
+                document.getElementById(section).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a.nav-link').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Close offcanvas menu when a link is clicked
+        document.querySelectorAll('.offcanvas-body .nav-link').forEach(link => {
+            link.addEventListener('click', function () {
+                var bsOffcanvas = bootstrap.Offcanvas.getInstance(document.getElementById('offcanvasNavbar'));
+                bsOffcanvas.hide();
+            });
+        });
+
+        // Form submission handling
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Here you would typically send the form data to a server
+            alert('Mesajınız üçün təşəkkür edirik! Tezliklə sizinlə əlaqə saxlayacağıq.');
+            this.reset();
+        });
+
+        // Lazy loading for images
+        document.addEventListener("DOMContentLoaded", function() {
+            var lazyImages = [].slice.call(document.querySelectorAll("img.lazy"));
+
+            if ("IntersectionObserver" in window) {
+                let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
+                    entries.forEach(function(entry) {
+                        if (entry.isIntersecting) {
+                            let lazyImage = entry.target;
+                            lazyImage.src = lazyImage.dataset.src;
+                            lazyImage.classList.remove("lazy");
+                            lazyImageObserver.unobserve(lazyImage);
+                        }
+                    });
+                });
+
+                lazyImages.forEach(function(lazyImage) {
+                    lazyImageObserver.observe(lazyImage);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
